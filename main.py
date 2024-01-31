@@ -5,7 +5,6 @@ import gradio
 import numpy as np
 import gradio as gr
 from database_manager import database_manager
-import cv2 as cv
 from PIL import Image
 import PIL
 
