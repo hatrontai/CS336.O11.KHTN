@@ -1,0 +1,7 @@
+redis
+numpy
+gradio
+numpy
+pillow
+
+
