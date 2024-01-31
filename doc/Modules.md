@@ -8,10 +8,10 @@ def get_embed_dim():
 ```python
 def image_encoder(image -> PIL Image):
 	...
-	return embedding -> Tensor(1,1,n)
+	return embedding -> numpy array
 ```
 ```python
 def text_encoder(text -> string):
 	...
-	return embedding -> Tensor(1,1,n)
+	return embedding -> numpy array
 ```
