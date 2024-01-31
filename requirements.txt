@@ -3,5 +3,3 @@ numpy
 gradio
 numpy
 pillow
-
-
