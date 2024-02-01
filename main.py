@@ -8,13 +8,10 @@ from database_manager import database_manager
 from PIL import Image
 import PIL
 
-dataframe = database_manager()
+manager = database_manager()
 
 def Processing(text_input):
-    # processing
-    dataframe = database_manager()
-    rankedlist_retrieved = dataframe.query(text_input, topk = 20)
-    #print(rankedlist_retrieved)
+    rankedlist_retrieved = manager.query(text_input, topk = 20)
     
     imgs_retrieved = []
     for doc in rankedlist_retrieved:

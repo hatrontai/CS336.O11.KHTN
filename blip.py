@@ -23,15 +23,15 @@ def init_tokenizer():
 
 def image_encoder(image, model, vis_processors, device):
     image_processed = vis_processors["eval"](image).unsqueeze(0).to(device)
-    image_embeds = model.visual_encoder.forward_features(image)
+    image_embeds = model.visual_encoder.forward_features(image_processed)
     image_features = model.vision_proj(image_embeds)
     image_features = F.normalize(image_features, dim=-1)
   
-    embedding = image_features[0].detach().numpy() # get embedding of cls tokens on ViT for representation vector.
+    embedding = image_features[0].detach().cpu().numpy() # get embedding of cls tokens on ViT for representation vector.
     return embedding
 
 def text_encoder(text, model, tokenizer, text_processors, device):
-    text_input = txt_processors["eval"](text)
+    text_input = text_processors["eval"](text)
     text = tokenizer(text_input, return_tensors="pt", padding=True).to(device)
     text_output = model.text_encoder(
                 text.input_ids,
@@ -42,5 +42,5 @@ def text_encoder(text, model, tokenizer, text_processors, device):
     text_embeds = text_output.last_hidden_state
     text_features = model.text_proj(text_embeds)
     text_features = F.normalize(text_features, dim=-1)
-    embedding = text_features[0][0].detach().numpy() # get embedding of cls tokens on BERT for representation vector.
+    embedding = text_features[0][0].detach().cpu().numpy() # get embedding of cls tokens on BERT for representation vector.
     return embedding
