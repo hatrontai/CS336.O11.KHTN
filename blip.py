@@ -4,7 +4,7 @@ from transformers import BertTokenizer
 import torch.nn.functional as F
 
 def get_embed_dim():
-	return 256
+    return 256
 
 def init_model(model_size): #model_size must be "base" or "large"
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -28,7 +28,7 @@ def image_encoder(image, model, vis_processors, device):
     image_features = F.normalize(image_features, dim=-1)
   
     embedding = image_features[0].detach().numpy() # get embedding of cls tokens on ViT for representation vector.
-  	return embedding
+    return embedding
 
 def text_encoder(text, model, tokenizer, text_processors, device):
     text_input = txt_processors["eval"](text)
