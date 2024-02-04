@@ -11,7 +11,7 @@ import PIL
 manager = database_manager()
 
 def Processing(text_input):
-    rankedlist_retrieved = manager.query(text_input, topk = 20)
+    rankedlist_retrieved = manager.query(text_input, topk = 30)
     
     imgs_retrieved = []
     for doc in rankedlist_retrieved:

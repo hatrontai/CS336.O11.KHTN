@@ -5,31 +5,29 @@ import os
 from PIL import Image
 
 
-from blip import text_encoder, image_encoder, get_embed_dim, init_tokenizer, init_model
+from blip import get_embed_dim, blip
 from redis.commands.search.field import (
     TextField,
     VectorField,
 )
 from redis.commands.search.indexDefinition import IndexDefinition, IndexType
 from redis.commands.search.query import Query
-
+from tqdm import tqdm 
 
 
 class database_manager:
-    def __init__(self):
+    def __init__(self, model = blip()):
         self.client = redis.Redis(host="localhost", port=6379, decode_responses=True)
 
         # Define index params
-        self.index_name = 'index7'
+        self.index_name = 'index8'
         self.doc_prefix = 'img:'
 
         # Image path to retrieve
-        self.img_path = "flickr30k/Images"
+        self.img_path = "flickr30k-images"
 
         # Initialize model
-        self.model, self.vis_processor, self.text_processor = init_model('base')
-        self.tokenizer = init_tokenizer()
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.model = blip()
 
     def create_index(self, distance_metric = "COSINE", counter = False):
 
@@ -65,7 +63,7 @@ class database_manager:
             pipe = self.client.pipeline()
 
             cnt = 0
-            for name in os.listdir(self.img_path):
+            for name in tqdm(os.listdir(self.img_path)):
                 if name[-3:] == 'jpg':
                     obj = {}
                     
@@ -77,8 +75,8 @@ class database_manager:
                     #objects.append({"dir":os.path.join(img_path,name), "embedding":embedding})
                     obj['dir'] = img_dir
 
-                    embedding = image_encoder(img, self.model, self.vis_processor, self.device)
-                    obj['embedding'] = embedding[0].astype(np.float32).tobytes()
+                    embedding = self.model.encode_image(img)
+                    obj['embedding'] = embedding.astype(np.float32).tobytes()
                     key = f'img:{name[:-4]}'
 
                     if counter:
@@ -87,12 +85,12 @@ class database_manager:
 
                     pipe.hset(key, mapping = obj)
                     res = pipe.execute()
-                    print(f'error: {res}')
+                    #print(f'error: {res}')
                     
 
 
-    def query(self, search_text, topk = 40):
-        embedding = text_encoder(search_text, self.model, self.tokenizer, self.text_processor, self.device)
+    def query(self, search_text, topk = 30):
+        embedding = self.model.encode_text()
         
         query = (
             Query(f"*=>[KNN {topk} @embedding $vec as score]")
