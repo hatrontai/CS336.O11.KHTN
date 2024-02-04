@@ -18,7 +18,7 @@ def init_tokenizer():
 class blip2:
     def __init__(self, model_size='pretrain'):
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.model, self.vis_processor, self.txt_processor = load_model_and_preprocess(name = "blip2_image_text_matching", 
+        self.model, self.vis_processor, self.text_processor = load_model_and_preprocess(name = "blip2_image_text_matching", 
                                                                           model_type = model_size, 
                                                                           is_eval = True, 
                                                                           device = self.device)
