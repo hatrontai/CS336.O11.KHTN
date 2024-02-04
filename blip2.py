@@ -6,7 +6,7 @@ import torch.nn.functional as F
 def get_embed_dim():
     return 256
 
-def init_model(model_size): #model_size must be "pretrain"
+def init_model(model_size = 'pretrain'): #model_size must be "pretrain"
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model, vis_processors, txt_processors = load_model_and_preprocess(name = "blip2_image_text_matching", 
                                                                           model_type = model_size, 
