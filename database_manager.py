@@ -5,7 +5,7 @@ import os
 from PIL import Image
 
 
-from blip import get_embed_dim, blip
+from blip2 import get_embed_dim, blip2
 from redis.commands.search.field import (
     TextField,
     VectorField,
@@ -16,18 +16,18 @@ from tqdm import tqdm
 
 
 class database_manager:
-    def __init__(self, model = blip()):
+    def __init__(self, model = blip2()):
         self.client = redis.Redis(host="localhost", port=6379, decode_responses=True)
 
         # Define index params
-        self.index_name = 'index8'
+        self.index_name = 'index10'
         self.doc_prefix = 'img:'
 
         # Image path to retrieve
         self.img_path = "flickr30k-images"
 
         # Initialize model
-        self.model = blip()
+        self.model = model
 
     def create_index(self, distance_metric = "COSINE", counter = False):
 
