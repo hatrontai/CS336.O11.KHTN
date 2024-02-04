@@ -17,13 +17,17 @@ def init_tokenizer():
     return tokenizer
 
 class blip:
-    def __init__(self, model_size = 'base'): # model_size must be "base" or "large"
+    def __init__(self, model_size = 'base', use_cpu = False): # model_size must be "base" or "large"
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        if (use_cpu):
+            self.device = 'cpu'
+        
         self.model, self.vis_processor, self.txt_processor = load_model_and_preprocess(name = "blip_feature_extractor", 
                                                                           model_type = model_size, 
                                                                           is_eval = True, 
                                                                           device = self.device)
         self.tokenizer = init_tokenizer()
+        
 
     def encode_image(self, image):
         image_processed = self.vis_processor["eval"](image).unsqueeze(0).to(self.device)
@@ -35,7 +39,7 @@ class blip:
         return embedding
 
     def encode_text(self, text):
-        text_input = self.text_processor["eval"](text)
+        text_input = self.txt_processor["eval"](text)
         text = self.tokenizer(text_input, return_tensors="pt", padding=True).to(self.device)
         text_output = self.model.text_encoder(
                     text.input_ids,

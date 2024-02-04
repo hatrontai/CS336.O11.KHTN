@@ -5,7 +5,7 @@ import os
 from PIL import Image
 
 
-from blip2 import get_embed_dim, blip2
+from blip import get_embed_dim, blip
 from redis.commands.search.field import (
     TextField,
     VectorField,
@@ -13,10 +13,10 @@ from redis.commands.search.field import (
 from redis.commands.search.indexDefinition import IndexDefinition, IndexType
 from redis.commands.search.query import Query
 from tqdm import tqdm 
-
+from time import time
 
 class database_manager:
-    def __init__(self, model = blip2()):
+    def __init__(self, use_cpu = False):
         self.client = redis.Redis(host="localhost", port=6379, decode_responses=True)
 
         # Define index params
@@ -27,7 +27,9 @@ class database_manager:
         self.img_path = "flickr30k-images"
 
         # Initialize model
-        self.model = model
+        self.model = blip(use_cpu = use_cpu)
+        self.query_total = 0.0
+        self.encode_total = 0.0
 
     def create_index(self, distance_metric = "COSINE", counter = False):
 
@@ -89,9 +91,11 @@ class database_manager:
                     
 
 
-    def query(self, search_text, topk = 30):
-        embedding = self.model.encode_text()
-        
+    def query(self, search_text, topk = 30, enable_time_log = False):
+        encode_time = time()
+        embedding = self.model.encode_text(search_text)
+
+        query_time = time()
         query = (
             Query(f"*=>[KNN {topk} @embedding $vec as score]")
              .sort_by("score")
@@ -104,6 +108,11 @@ class database_manager:
             "vec": embedding.astype(np.float32).tobytes()
         }
         result = self.client.ft(self.index_name).search(query, query_params).docs
+        end_time = time()
+
+        if enable_time_log == True:
+            self.query_total += end_time - query_time
+            self.encode_total += query_time - encode_time
         return result
 
 

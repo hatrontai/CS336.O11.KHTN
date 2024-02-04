@@ -23,11 +23,12 @@ class blip2:
                                                                           is_eval = True, 
                                                                           device = self.device)
         self.tokenizer = init_tokenizer()
+        self.model = self.model.to(torch.float)
 
     def encode_image(self, image):
-        image_processed = self.vis_processor["eval"](image).unsqueeze(0).to(self.device)
-        with self.model.maybe_autocast():
-            image_embeds = self.model.ln_vision(self.model.visual_encoder(image_processed))
+        image_processed = self.vis_processor["eval"](image).unsqueeze(0).to(torch.float).to(self.device)
+        
+        image_embeds = self.model.ln_vision(self.model.visual_encoder(image_processed))
         image_embeds = image_embeds.float()
         image_atts = torch.ones(image_embeds.size()[:-1], dtype=torch.long).to(
                     image_embeds.device

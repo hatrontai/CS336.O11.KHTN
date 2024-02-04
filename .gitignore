@@ -4,3 +4,5 @@ flickr30k-images
 
 
 flickr30k-images.tar.gz
+testset.json
+time_benchmark.py
