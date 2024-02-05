@@ -3,11 +3,11 @@
 **Instructor:** Ph.D Ngo Duc Thanh
 
 **Team members:**
-	Nguyen Duc Nhan - 21520373
-	Le Chau Anh - 21521821
-	Quan Minh Vo - 21520093
-	Ha Trong Tai - 21520436
-	Nguyen Nhat Minh - 21521135
+- Nguyen Duc Nhan - 21520373
+- Le Chau Anh - 21521821
+- Vo Minh Quan - 21520093
+- Ha Trong Tai - 21520436
+- Nguyen Nhat Minh - 21521135
 
 **Year:** 2023-2024
 ## Image retrieval system
