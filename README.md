@@ -32,7 +32,7 @@ pip install -r requirements.txt
 ```bash
 python construct_index.py
 ```
-- Download [embedding file](https://www.kaggle.com/datasets/iambestfeeder/annotations-flickr30k?select=image_features_blip_feature_extractor_base.json) to `/data/` and load embeddings
+- Download [embedding file](https://www.kaggle.com/datasets/iambestfeeder/annotations-flickr30k?select=image_features_blip_feature_extractor_base.json) to `data/` and load embeddings
 ```bash
 python load_index.py
 ```
