@@ -8,15 +8,22 @@ conda activate cs336
 ```bash
 pip install -r requirements.txt
 ```
-3. Install [redis-stack](https://redis.io/docs/install/install-stack/) which will be used in index construction
+3. Install [Redis Stack](https://redis.io/docs/install/install-stack/) which will be used in index construction
 # Setup
-Download [Flickr30k dataset](https://www.kaggle.com/datasets/adityajn105/flickr30k) and extract it in the repository with the name "flickr30k"
+1. Download [Flickr 30k images](https://shannon.cs.illinois.edu/DenotationGraph/) and extract it in the repository with the name "flickr30k-images"
 
-Construct index
+2. Start Redis Stack
+
+3. Construct index from scratch or load precalculated embeddings
+- Construct index
 ```bash
 python construct_index.py
 ```
-Start system with user interface
+- Download [embedding file](https://www.kaggle.com/datasets/iambestfeeder/annotations-flickr30k?select=image_features_blip_feature_extractor_base.json) to `/data/` and load embeddings
+```bash
+python load_index.py
+```
+4. Start system with user interface
 ```bash
 python main.py
 ```
