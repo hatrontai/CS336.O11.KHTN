@@ -28,14 +28,15 @@ pip install -r requirements.txt
 2. Start Redis Stack
 
 3. Construct index from scratch or load precalculated embeddings
-- Construct index
-```bash
-python construct_index.py
-```
 - Download [embedding file](https://www.kaggle.com/datasets/iambestfeeder/annotations-flickr30k?select=image_features_blip_feature_extractor_base.json) to `data/` and load embeddings
 ```bash
 python load_index.py
 ```
+- Or construct index from scratch
+```bash
+python construct_index.py
+```
+
 4. Start system with user interface
 ```bash
 python main.py
