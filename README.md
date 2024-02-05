@@ -40,4 +40,11 @@ python load_index.py
 ```bash
 python main.py
 ```
+### Acknowledge
+This system is deployed thanks to:
+- [lavis](https://github.com/salesforce/LAVIS/tree/5ddd9b4e5149dbc514e81110e03d28458a754c5d)
+- [torch](https://pytorch.org)
+- [transformers](https://github.com/huggingface/transformers)
+- [redis](https://redis.io/)
+- [gradio](https://www.gradio.app/)
 
